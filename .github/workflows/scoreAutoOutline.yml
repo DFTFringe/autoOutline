@@ -47,7 +47,7 @@ jobs:
     # Step 7: Run the Python script and save logs
     - name: Run scoreAutoOutline.py
       run: |
-        python scoreAutoOutline.py > log.txt 2>&1
+        python scoreAutoOutline.py 2>&1 | tee log.txt
 
     # Step 8: Upload log.txt as an artifact
     - name: Upload log as artifact
