@@ -29,12 +29,10 @@ if __name__ == "__main__":
             radius_x = data['outside_outline']['radius_x']
 
             circleRadiusApproximate = radius_x * random.uniform(0.97, 1.03)  # Randomize radius by +/-3%
-            with open(picture, 'rb') as img_file:
-                pictures_rr = img_file.read()
-
-            
+        
+            # execute the code we want to test    
             start_time = time.process_time()
-            radius, center = computeOutline(pictures_rr, circleRadiusApproximate)
+            radius, center = computeOutline(picture, circleRadiusApproximate)
             elapsed_time = time.process_time() - start_time
 
             # compare center with centex_x and center_y from the json file

@@ -1,4 +1,9 @@
 
+# when importing things that are not isntalled by default, you need to update requirements.txt
+import cv2
+import numpy as np
+
+
 
 
 def computeOutline(picture, circleRadiusApproximate):
@@ -10,7 +15,12 @@ def computeOutline(picture, circleRadiusApproximate):
     The function should find the correct center of the circle and return it.
     """
 
-    radius = circleRadiusApproximate   # Example radius, replace with actual logic to compute radius
-    center = (20, 20)  # Example center, replace with actual logic to find the center
+
+    # Load grayscale image
+    img = cv2.imread(picture, cv2.IMREAD_GRAYSCALE)
+
+
+    radius = 10       # This is a placeholder value, replace with your computed radius
+    center = (10, 10) # This is a placeholder value, replace with your computed center
 
     return radius, center
