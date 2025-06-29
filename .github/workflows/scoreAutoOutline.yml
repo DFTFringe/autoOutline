@@ -56,13 +56,10 @@ jobs:
         name: scoreAutoOutline-log
         path: log.txt
 
-    # Step 9: Comment last 3 lines of log on PR
-    - name: Post log tail to PR
-      if: github.event_name == 'pull_request'
+    # Step 9: Print last 4 lines of log to workflow logs
+    - name: Show log tail in workflow output
       run: |
-        LOG_TAIL=$(tail -n 3 log.txt)
-        COMMENT="### 🔍 scoreAutoOutline Log Tail\n\`\`\`\n$LOG_TAIL\n\`\`\`"
-        gh pr comment "$PR_URL" --body "$COMMENT"
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        PR_URL: ${{ github.event.pull_request.html_url }}
+        echo "🔍 Showing last 4 lines of log.txt:"
+        echo "-----------------------------------"
+        tail -n 4 log.txt
+        echo "-----------------------------------"
