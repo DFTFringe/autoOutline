@@ -7,7 +7,7 @@ if __name__ == "__main__":
     import pathlib
     import json
     import random
-import time
+    import time
 
     statistics=[]
 
