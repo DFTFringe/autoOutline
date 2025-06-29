@@ -1,0 +1,65 @@
+name: scoreAutoOutline
+
+on:
+  pull_request:        # Trigger the workflow on pull request
+  workflow_dispatch:   # Allow manual triggering from GitHub UI
+
+env:
+  python_version: 3.13
+
+jobs:
+  get-pictures:
+    runs-on: ubuntu-24.04
+
+    steps:
+    # Step 1: Checkout the repository code
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # Step 2: Set up Python
+    - name: Set up Python ${{ env.python_version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.python_version }}
+
+    # Step 3: Install required dependencies
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt || true  # optional fallback if file missing
+
+    # Step 4: Download the first zip file
+    - name: Download 20250628_randomPicturesRR.zip
+      run: |
+        curl -L -o rr.zip https://github.com/atsju/DFTFringe/releases/download/v7.3.4/20250628_randomPicturesRR.zip
+
+    # Step 5: Download the second zip file
+    - name: Download 20250629_randomPicturesOther.zip
+      run: |
+        curl -L -o other.zip https://github.com/atsju/DFTFringe/releases/download/v7.3.4/20250629_randomPicturesOther.zip
+
+    # Step 6: Unzip the files into separate folders
+    - name: Unzip files
+      run: |
+        unzip rr.zip -d pictures_rr
+        unzip other.zip -d pictures_other
+
+    # Step 7: Run the Python script and save logs
+    - name: Run scoreAutoOutline.py
+      run: |
+        python scoreAutoOutline.py 2>&1 | tee log.txt
+
+    # Step 8: Upload log.txt as an artifact
+    - name: Upload log as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: scoreAutoOutline-log
+        path: log.txt
+
+    # Step 9: Print last 4 lines of log to workflow logs
+    - name: Show log tail in workflow output
+      run: |
+        echo "🔍 Showing last 4 lines of log.txt:"
+        echo "-----------------------------------"
+        tail -n 4 log.txt
+        echo "-----------------------------------"
