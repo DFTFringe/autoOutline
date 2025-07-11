@@ -28,9 +28,9 @@ if __name__ == "__main__":
             center_y = data['outside_outline']['center_y']
             radius_x = data['outside_outline']['radius_x']
 
-            circleRadiusApproximate = radius_x * random.uniform(0.97, 1.03)  # Randomize radius by +/-3%
-        
-            # execute the code we want to test    
+            circleRadiusApproximate = radius_x #* random.uniform(0.97, 1.03)  # Randomize radius by +/-3%
+
+            # execute the code we want to test
             start_time = time.process_time()
             radius, center = computeOutline(picture, circleRadiusApproximate)
             elapsed_time = time.process_time() - start_time
@@ -45,7 +45,7 @@ if __name__ == "__main__":
 
     print("Picture Name, Computed Radius, CenterX, CenterY, Radius Error Percent, Center X Error Percent, Center Y Error Percent, elapsed_time")
     for stat in statistics:
-        print(f"{stat[0]}, {stat[1]}, {stat[2]}, {stat[3]}, {stat[4]:.2f}%, {stat[5]:.2f}%, {stat[6]:.2f}%, {stat[7]:.4f} seconds")   
+        print(f"{stat[0]}, {stat[1]}, {stat[2]}, {stat[3]}, {stat[4]:.2f}%, {stat[5]:.2f}%, {stat[6]:.2f}%, {stat[7]:.4f} seconds")
     mean_radius_error = sum(stat[4] for stat in statistics) / len(statistics)
     mean_center_x_error = sum(stat[5] for stat in statistics) / len(statistics)
     mean_center_y_error = sum(stat[6] for stat in statistics) / len(statistics)
