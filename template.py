@@ -5,9 +5,10 @@ import numpy as np
 import numpy.linalg as la
 from concurrent.futures import ThreadPoolExecutor
 import os
-from tqdm import tqdm
+#from tqdm import tqdm
 import scipy.optimize
 import math
+import matplotlib.pyplot as plt
 
 
 def computeOutline(picture, circleRadiusApproximate):
@@ -19,6 +20,7 @@ def computeOutline(picture, circleRadiusApproximate):
     The function should find the correct center of the circle and return it.
     """
 
+    print(str(picture))
 
     # Load grayscale image
     img = cv2.imread(str(picture), cv2.IMREAD_GRAYSCALE).astype(np.float32)
@@ -72,17 +74,45 @@ def computeOutline(picture, circleRadiusApproximate):
         return around_density - in_density
 
     # Optimize the initial rough guess.
-    result = scipy.optimize.basinhopping(
-      func=try_circle,
-      x0=np.array([ centroid[0], centroid[1], radius_guess ]),
-      niter=optimization_iters,
-      stepsize=max(img.shape[0], img.shape[1]) * optimization_step_scale,
-      minimizer_kwargs={"method": "COBYLA"},
-      seed=optimization_seed,
-    )
+    #result = scipy.optimize.basinhopping(
+    #    func=try_circle,
+    #    x0=np.array([ centroid[0], centroid[1], radius_guess ]),
+    #    niter=optimization_iters,
+    #    stepsize=max(img.shape[0], img.shape[1]) * optimization_step_scale,
+    #    minimizer_kwargs={"method": "COBYLA"},
+    #    seed=optimization_seed,
+    #)
+    # Plotting
 
-    cx, cy, radius = result.x
 
-    radius -= ksize / 2
+    fig, axs = plt.subplots(1, 3, figsize=(18, 6))
 
-    return radius, ( cx, cy )
+    # 1. Original image with result circle
+    axs[0].imshow(img, cmap='gray')
+    #circle = plt.Circle((result.x[0], result.x[1]), result.x[2], color='red', fill=False, linewidth=2)
+    #axs[0].add_patch(circle)
+    #axs[0].set_title('Original Image + Fitted Circle')
+
+    # 2. Local variance
+    axs[1].imshow(local_variance, cmap='hot')
+    axs[1].set_title('Local Variance')
+
+    # 3. Points variable
+    axs[2].imshow(np.zeros_like(img), cmap='gray', extent=[0, img.shape[1], img.shape[0], 0])
+    axs[2].scatter(points[:, 0], points[:, 1], s=2, c='lime')
+    axs[2].set_xlim(0, img.shape[1])
+    axs[2].set_ylim(img.shape[0], 0)
+    axs[2].set_title('Points')
+
+    plt.tight_layout()
+    plt.show()
+
+    #cx, cy, radius = result.x
+
+    #radius -= ksize / 2
+
+    #return radius, ( cx, cy )
+
+    radius = 10       # This is a placeholder value, replace with your computed radius
+    center = (10, 10) # This is a placeholder value, replace with your computed center
+    return radius, center
