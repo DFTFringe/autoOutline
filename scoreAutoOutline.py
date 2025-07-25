@@ -41,7 +41,7 @@ if __name__ == "__main__":
             centerErrorYPercent = abs(center[1] - center_y) / center_y * 100
             #print(f"{picture.name}, Computed Radius: {radius}, Center: {center}, {radiusErrorPercent:.2f}% radius error, {centerErrorXPercent:.2f}% center X error, {centerErrorYPercent:.2f}% center Y error")
             statistics.append([ picture.name, radius, center[0], center[1], radiusErrorPercent, centerErrorXPercent, centerErrorYPercent, elapsed_time])
-
+            
 
     print("Picture Name, Computed Radius, CenterX, CenterY, Radius Error Percent, Center X Error Percent, Center Y Error Percent, elapsed_time")
     for stat in statistics:
